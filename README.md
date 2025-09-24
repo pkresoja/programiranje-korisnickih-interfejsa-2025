@@ -1,2 +1,7 @@
-# programiranje-korisnickih-interfejsa-2025
-Izvorni kod aplikacije sa predmeta Programiranje Korisnickih Interfejsa  na Univerzitetu Singidunum u zimskom semestru
+# Programiranje korisničkih interfejsa 2025
+
+Tehnologije:
+- Angular 20
+- Boostrap 5
+- FontsAwesome 7
+- Axios HTTP
