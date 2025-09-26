@@ -1,0 +1,41 @@
+<div class="card mb-3">
+    <div class="card-header">
+        <h5>Search</h5>
+    </div>
+    <div class="card-body">
+        <input type="text" class="form-control" [(ngModel)]="search" (keyup)="loadQuestions()"
+            placeholder="🔍 Koja je cena školarine?">
+    </div>
+</div>
+
+@if (webData().length > 0) {
+<div class="card">
+    <div class="card-header">
+        <h5>Admission Questions</h5>
+    </div>
+    <div class="card-body">
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            @for (question of webData(); track question.questionId) {
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        [attr.data-bs-target]="`#${question.intent}`" aria-expanded="false"
+                        [attr.aria-controls]="question.intent">
+                        {{question.text}}
+                    </button>
+                </h2>
+                <div [id]="question.intent" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body" [innerHTML]="convertToLinks(question.answer)"></div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+}
+@else {
+<div class="loading">
+    <h1>Podaci se ucitavaju!</h1>
+    <p>Molim sacekajte dok se podaci prezuimaju sa servera</p>
+</div>
+}
