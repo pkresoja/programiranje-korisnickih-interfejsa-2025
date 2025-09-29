@@ -4,6 +4,7 @@ import { About } from './about/about';
 import { Question } from './question/question';
 import { Login } from './login/login';
 import { Signup } from './signup/signup';
+import { Profile } from './profile/profile';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -11,5 +12,6 @@ export const routes: Routes = [
     { path: 'signup', component: Signup },
     { path: 'about', component: About },
     { path: 'question', component: Question },
+    { path: 'profile', component: Profile },
     { path: '**', redirectTo: '' }
 ]

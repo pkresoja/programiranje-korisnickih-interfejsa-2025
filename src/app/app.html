@@ -24,6 +24,25 @@
             <i class="fa-solid fa-circle-info"></i> About
           </a>
         </li>
+        @if(hasAuth()) {
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/profile">
+            <i class="fa-solid fa-user"></i> Profile
+          </a>
+        </li>
+        <li class="nav-item">
+          <button type="button" class="nav-link" (click)="logoutNow()">
+            <i class="fa-solid fa-circle-left"></i> Logout
+          </button>
+        </li>
+        } 
+        @else {
+          <li class="nav-item">
+          <a class="nav-link" routerLink="/login">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+          </a>
+        </li>
+        }
       </ul>
     </div>
   </div>
