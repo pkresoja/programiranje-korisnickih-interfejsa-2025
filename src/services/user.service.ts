@@ -1,7 +1,7 @@
 import { UserModel } from "../models/user.model"
 
 export class UserService {
-    static findUserByEmail(email: string) {
+    static getUsers(): UserModel[] {
         if (!localStorage.getItem('users'))
             localStorage.setItem('users', JSON.stringify([
                 {
@@ -14,8 +14,11 @@ export class UserService {
                     data: []
                 }
             ]))
+        return JSON.parse(localStorage.getItem('users')!)
+    }
 
-        const users: UserModel[] = JSON.parse(localStorage.getItem('users')!)
+    static findUserByEmail(email: string) {
+        const users: UserModel[] = this.getUsers()
         const exactUser = users.find(u => u.email === email)
 
         if (!exactUser)
@@ -31,6 +34,12 @@ export class UserService {
         }
 
         localStorage.setItem('active', user.email)
+    }
+
+    static signup(payload: UserModel) {
+        const users: UserModel[] = this.getUsers()
+        users.push(payload)
+        localStorage.setItem('users', JSON.stringify(users))
     }
 
     static getActiveUser() {

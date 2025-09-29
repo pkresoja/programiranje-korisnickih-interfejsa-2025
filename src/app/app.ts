@@ -20,6 +20,7 @@ export class App {
   }
 
   logoutNow() {
+    if (!confirm('Logout now?')) return
     UserService.logout()
     this.router.navigateByUrl('/login')
   }
