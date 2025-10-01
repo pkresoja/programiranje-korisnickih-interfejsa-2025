@@ -1,0 +1,43 @@
+@if(flight() != null) {
+<div class="card login">
+    <img [src]="`https://img.pequla.com/destination/${flight()!.destination.split(' ')[0].toLowerCase()}.jpg`"
+        class="card-img-top" [alt]="flight()?.destination">
+    <div class="card-body">
+        <form [formGroup]="form!" (ngSubmit)="onSubmit()" novalidate>
+            <div class="mb-3">
+                <label for="dest" class="form-label">Destination</label>
+                <input type="text" class="form-control" id="dest" formControlName="dest">
+            </div>
+            <div class="mb-3">
+                <label for="num" class="form-label">Flight Number</label>
+                <input type="text" class="form-control" id="num" formControlName="num">
+            </div>
+            <div class="mb-3">
+                <label for="sch" class="form-label">Scheduled At</label>
+                <input type="text" class="form-control" id="sch" formControlName="sch">
+            </div>
+            <div class="mb-3">
+                <label for="airline" class="form-label">Choose Airline</label>
+                <select class="form-select" id="airline" formControlName="airline">
+                    @for (a of airlines; track $index) {
+                    <option [value]="a">{{a}}</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="suite" class="form-label">Choose Suite</label>
+                <select class="form-select" id="suite" formControlName="suite">
+                    @for (s of suites; track $index) {
+                    <option [value]="s">{{s}}</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+}

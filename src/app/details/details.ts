@@ -13,9 +13,9 @@ export class Details {
   protected flight = signal<FlightModel | null>(null)
 
   constructor(private route: ActivatedRoute) {
-    this.route.params.subscribe((params: any)=>{
+    this.route.params.subscribe((params: any) => {
       FlightService.getFlightById(params.id)
-      .then(rsp=>this.flight.set(rsp.data))
+        .then(rsp => this.flight.set(rsp.data))
     })
   }
 
@@ -23,7 +23,7 @@ export class Details {
     return JSON.stringify(this.flight(), null, 2)
   }
 
-    protected formatDate(iso: string) {
+  protected formatDate(iso: string) {
     return new Date(iso).toLocaleString('sr-RS', {
       day: '2-digit',
       month: '2-digit',

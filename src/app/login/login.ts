@@ -27,7 +27,9 @@ export class Login {
 
     try {
       UserService.login(this.form.value.email, this.form.value.password)
-      this.router.navigate(['/profile'])
+      const url = sessionStorage.getItem('ref') ?? '/profile'
+      sessionStorage.removeItem('ref')
+      this.router.navigateByUrl(url)
     } catch (e) {
       console.error(e)
       alert('Check your login params!')
