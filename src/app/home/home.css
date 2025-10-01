@@ -1,0 +1,10 @@
+.flights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.card {
+    width: 18rem;
+}
