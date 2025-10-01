@@ -1,0 +1,39 @@
+@if(flight()) {
+<div class="row">
+    <div class="col-12 col-md-6">
+        <img class="img-fluid" [src]="getImage(flight()!.destination)">
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Flight Details</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        Destination: <strong>{{flight()?.destination}}</strong>
+                    </li>
+                    <li class="list-group-item">
+                       Flight Number: <strong>{{flight()?.flightNumber}}</strong>
+                    </li>
+                    <li class="list-group-item">
+                        Scheduled At: <strong>{{formatDate(flight()!.scheduledAt)}}</strong>
+                    </li>
+                    <li class="list-group-item">
+                        Status: <strong>{{flight()?.estimatedAt ? 'Delayed' : 'On Time'}}</strong>
+                    </li>
+                    <li class="list-group-item">
+                        Plane: <strong>{{flight()?.plane}}</strong>
+                    </li>
+                    <li class="list-group-item">
+                        Terminal: <strong>{{flight()?.terminal}}</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <pre>{{convertToString()}}</pre>
+</div>
+}

@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { FlightService } from '../../services/flight.service';
 import { RouterLink } from '@angular/router';
+import { FlightModel } from '../../models/flight.model';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +10,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home.css'
 })
 export class Home {
-  protected flights = signal<any[]>([])
+  protected flights = signal<FlightModel[]>([])
 
   constructor() {
     FlightService.getFutureFlights()

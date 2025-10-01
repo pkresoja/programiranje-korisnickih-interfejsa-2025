@@ -9,9 +9,7 @@ import { UserService } from '../services/user.service';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('Petar');
-
-  constructor(protected router: Router) {}
+  constructor(protected router: Router) { }
 
   hasAuth() {
     if (localStorage.getItem('active'))
