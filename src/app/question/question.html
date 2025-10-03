@@ -16,7 +16,7 @@
     <div class="card-body">
         <div class="accordion accordion-flush" id="accordionFlushExample">
             @for (question of webData(); track question.questionId) {
-            <div class="accordion-item">
+            <div class="accordion-item" [attr.data-question-id]="question.questionId">
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         [attr.data-bs-target]="`#${question.intent}`" aria-expanded="false"

@@ -4,6 +4,8 @@ import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { ReservationModel } from '../../models/reservation.model';
 import { Utils } from '../utils';
+import { FlightModel } from '../../models/flight.model';
+import { FlightService } from '../../services/flight.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,10 +15,13 @@ import { Utils } from '../utils';
 })
 export class Profile {
   protected currentUser = signal<UserModel | null>(null)
+  protected flights = signal<FlightModel[]>([])
 
   constructor(private router: Router, public utils: Utils) {
     try {
       this.currentUser.set(UserService.getActiveUser())
+      FlightService.getFlightsByIds(this.currentUser()!.data.map(r => r.flightId))
+        .then(rsp => this.flights.set(rsp.data))
     } catch {
       // Nema aktivnog korisnika
       // Idi na login
@@ -42,5 +47,9 @@ export class Profile {
   protected dislike(r: ReservationModel) {
     UserService.updateReservationStatus(r.createdAt, 'disliked')
     this.currentUser.set(UserService.getActiveUser())
+  }
+
+  protected getFlight(r: ReservationModel) {
+    return this.flights().find(f => f.id === r.flightId)
   }
 }
