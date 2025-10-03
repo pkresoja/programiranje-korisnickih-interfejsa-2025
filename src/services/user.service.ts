@@ -60,8 +60,24 @@ export class UserService {
                     airline,
                     suite,
                     status: 'waiting',
-                    createdAt: new Date(),
+                    createdAt: new Date().toISOString(),
                     updatedAt: null
+                })
+            }
+        })
+        localStorage.setItem('users', JSON.stringify(users))
+    }
+
+    static updateReservationStatus(createdAt: string, newStatus: 'paid' | 'waiting' | 'canceled' | 'liked' | 'disliked') {
+        const active = this.getActiveUser()
+        const users = this.getUsers()
+        users.forEach(u => {
+            if (u.email == active.email) {
+                u.data.forEach(r => {
+                    if (r.createdAt == createdAt) {
+                        r.updatedAt = new Date().toISOString()
+                        r.status = newStatus
+                    }
                 })
             }
         })

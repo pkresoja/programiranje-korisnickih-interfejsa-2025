@@ -1,6 +1,6 @@
 @if(flight() != null) {
 <div class="card login">
-    <img [src]="`https://img.pequla.com/destination/${flight()!.destination.split(' ')[0].toLowerCase()}.jpg`"
+    <img [src]="utils.getImage(flight()!.destination)"
         class="card-img-top" [alt]="flight()?.destination">
     <div class="card-body">
         <form [formGroup]="form!" (ngSubmit)="onSubmit()" novalidate>

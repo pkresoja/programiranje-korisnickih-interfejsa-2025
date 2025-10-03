@@ -68,25 +68,25 @@
                     <td>{{r.airline}}</td>
                     <td>{{r.suite}}</td>
                     <td>{{r.status}}</td>
-                    <td>{{r.updatedAt ?? r.createdAt}}</td>
+                    <td>{{utils.formatDate(r.updatedAt ?? r.createdAt)}}</td>
                     <td>
                         <div class="btn-group">
                             @if (r.status == 'waiting') {
-                            <button type="button" class="btn btn-sm btn-primary">
-                                Pay
+                            <button type="button" class="btn btn-sm btn-primary" (click)="pay(r)">
+                                <i class="fa-solid fa-credit-card"></i> Pay
                             </button>
-                            <button type="button" class="btn btn-sm btn-danger">
-                                Cancel
+                            <button type="button" class="btn btn-sm btn-danger" (click)="cancel(r)">
+                                <i class="fa-solid fa-ban"></i> Cancel
                             </button>
-                            }
-
-                            @if (r.status == 'paid') {
-                            <button type="button" class="btn btn-sm btn-success">
-                                Like
+                            } @else if (r.status == 'paid') {
+                            <button type="button" class="btn btn-sm btn-success" (click)="like(r)">
+                                <i class="fa-solid fa-thumbs-up"></i> Like
                             </button>
-                            <button type="button" class="btn btn-sm btn-danger">
-                                Dislike
+                            <button type="button" class="btn btn-sm btn-danger" (click)="dislike(r)">
+                                <i class="fa-solid fa-thumbs-down"></i> Dislike
                             </button>
+                            } @else {
+                                /
                             }
                         </div>
                     </td>

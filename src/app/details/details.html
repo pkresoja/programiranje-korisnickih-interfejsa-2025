@@ -1,7 +1,7 @@
 @if(flight()) {
 <div class="row">
     <div class="col-12 col-md-6">
-        <img class="img-fluid" [src]="getImage(flight()!.destination)">
+        <img class="img-fluid" [src]="utils.getImage(flight()!.destination)">
     </div>
     <div class="col-12 col-md-6">
         <div class="card">
@@ -17,7 +17,7 @@
                        Flight Number: <strong>{{flight()?.flightNumber}}</strong>
                     </li>
                     <li class="list-group-item">
-                        Scheduled At: <strong>{{formatDate(flight()!.scheduledAt)}}</strong>
+                        Scheduled At: <strong>{{utils.formatDate(flight()!.scheduledAt)}}</strong>
                     </li>
                     <li class="list-group-item">
                         Status: <strong>{{flight()?.estimatedAt ? 'Delayed' : 'On Time'}}</strong>

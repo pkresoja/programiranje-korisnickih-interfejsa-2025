@@ -4,6 +4,7 @@ import { FlightModel } from '../../models/flight.model';
 import { FlightService } from '../../services/flight.service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { Utils } from '../utils';
 
 @Component({
   selector: 'app-reservation',
@@ -17,7 +18,12 @@ export class Reservation {
   protected suites: string[] = ['Economy', 'Buissines', 'First Class']
   protected form: FormGroup | undefined
 
-  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private router: Router) {
+  constructor(
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    protected utils: Utils
+  ) {
     this.route.params.subscribe((params: any) => {
       // Provera da li smo ulogovani
       if (!localStorage.getItem('active')) {
