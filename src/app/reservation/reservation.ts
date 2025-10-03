@@ -38,7 +38,7 @@ export class Reservation {
           this.form = this.formBuilder.group({
             dest: new FormControl({ value: rsp.data.destination, disabled: true }),
             num: new FormControl({ value: rsp.data.flightNumber, disabled: true }),
-            sch: new FormControl({ value: rsp.data.scheduledAt, disabled: true }),
+            sch: new FormControl({ value: utils.formatDate(rsp.data.scheduledAt), disabled: true }),
             airline: [this.airlines[0], Validators.required],
             suite: [this.suites[0], Validators.required]
           })
