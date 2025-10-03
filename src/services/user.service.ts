@@ -50,6 +50,24 @@ export class UserService {
         return this.findUserByEmail(active)
     }
 
+    static createReservation(id: number, airline: string, suite: string) {
+        const active = this.getActiveUser()
+        const users = this.getUsers()
+        users.forEach(u => {
+            if (u.email == active.email) {
+                u.data.push({
+                    flightId: id,
+                    airline,
+                    suite,
+                    status: 'waiting',
+                    createdAt: new Date(),
+                    updatedAt: null
+                })
+            }
+        })
+        localStorage.setItem('users', JSON.stringify(users))
+    }
+
     static logout() {
         localStorage.removeItem('active')
     }

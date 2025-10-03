@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FlightModel } from '../../models/flight.model';
 import { FlightService } from '../../services/flight.service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-reservation',
@@ -40,6 +41,21 @@ export class Reservation {
   }
 
   onSubmit() {
-    console.log(this.form?.value)
+    if (!this.form?.valid) {
+      alert('Invalid form data!')
+      return
+    }
+
+    if (this.flight() == null) {
+      alert('Flight Not Loaded!')
+      return
+    }
+
+    try {
+      UserService.createReservation(this.flight()!.id, this.form.value.airline, this.form.value.suite)
+      this.router.navigateByUrl('/profile')
+    } catch {
+      alert('Failed to make a reservation!')
+    }
   }
 }

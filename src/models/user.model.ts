@@ -1,3 +1,5 @@
+import { ReservationModel } from "./reservation.model";
+
 export interface UserModel {
     firstName: string,
     lastName: string,
@@ -5,5 +7,5 @@ export interface UserModel {
     phone: string,
     password: string,
     destination: string,
-    data: any[]
+    data: ReservationModel[]
 }
