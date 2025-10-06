@@ -3,6 +3,7 @@ import { MainService } from '../../services/main.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { Utils } from '../utils';
 
 @Component({
   selector: 'app-signup',
@@ -14,7 +15,7 @@ export class Signup {
   protected form: FormGroup
   protected destinations = signal<string[]>([])
 
-  constructor(private formBuilder: FormBuilder, protected router: Router) {
+  constructor(private formBuilder: FormBuilder, protected router: Router, private utils: Utils) {
     MainService.getDestinations()
       .then(rsp => this.destinations.set(rsp.data))
 
@@ -31,12 +32,12 @@ export class Signup {
 
   onSubmit() {
     if (!this.form.valid) {
-      alert('Invalid form data!')
+      this.utils.showError('Invalid form data!')
       return
     }
 
     if (this.form.value.password !== this.form.value.repeat) {
-      alert(`Passwords don't match!`)
+      this.utils.showError(`Passwords don't match!`)
       return
     }
 
@@ -47,7 +48,7 @@ export class Signup {
       this.router.navigateByUrl('/login')
     } catch (e) {
       console.error(e)
-      alert('Data missing!')
+      this.utils.showError('Data missing!')
     }
   }
 }
