@@ -6,6 +6,7 @@ import { ReservationModel } from '../../models/reservation.model';
 import { Utils } from '../utils';
 import { FlightModel } from '../../models/flight.model';
 import { FlightService } from '../../services/flight.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-profile',
@@ -19,9 +20,13 @@ export class Profile {
 
   constructor(private router: Router, public utils: Utils) {
     try {
+      this.utils.showLoading()
       this.currentUser.set(UserService.getActiveUser())
       FlightService.getFlightsByIds(this.currentUser()!.data.map(r => r.flightId))
-        .then(rsp => this.flights.set(rsp.data))
+        .then(rsp => {
+          this.flights.set(rsp.data)
+          Swal.close()
+        })
     } catch {
       // Nema aktivnog korisnika
       // Idi na login
@@ -30,23 +35,31 @@ export class Profile {
   }
 
   protected pay(r: ReservationModel) {
-    UserService.updateReservationStatus(r.createdAt, 'paid')
-    this.currentUser.set(UserService.getActiveUser())
+    this.utils.showConfirm('Are you sure you want to pay for the reservation?', () => {
+      UserService.updateReservationStatus(r.createdAt, 'paid')
+      this.currentUser.set(UserService.getActiveUser())
+    })
   }
 
   protected cancel(r: ReservationModel) {
-    UserService.updateReservationStatus(r.createdAt, 'canceled')
-    this.currentUser.set(UserService.getActiveUser())
+    this.utils.showConfirm('Are you sure you want to cancel the reservation?', () => {
+      UserService.updateReservationStatus(r.createdAt, 'canceled')
+      this.currentUser.set(UserService.getActiveUser())
+    })
   }
 
   protected like(r: ReservationModel) {
-    UserService.updateReservationStatus(r.createdAt, 'liked')
-    this.currentUser.set(UserService.getActiveUser())
+    this.utils.showConfirm('Are you sure you want to leave a positive review?', () => {
+      UserService.updateReservationStatus(r.createdAt, 'liked')
+      this.currentUser.set(UserService.getActiveUser())
+    })
   }
 
   protected dislike(r: ReservationModel) {
-    UserService.updateReservationStatus(r.createdAt, 'disliked')
-    this.currentUser.set(UserService.getActiveUser())
+    this.utils.showConfirm('Are you sure you want to leave a negative review?', () => {
+      UserService.updateReservationStatus(r.createdAt, 'disliked')
+      this.currentUser.set(UserService.getActiveUser())
+    })
   }
 
   protected getFlight(r: ReservationModel) {

@@ -5,6 +5,7 @@ import { FlightService } from '../../services/flight.service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Utils } from '../utils';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reservation',
@@ -32,6 +33,7 @@ export class Reservation {
         return
       }
 
+      this.utils.showLoading()
       FlightService.getFlightById(params.id)
         .then(rsp => {
           this.flight.set(rsp.data)
@@ -42,26 +44,29 @@ export class Reservation {
             airline: [this.airlines[0], Validators.required],
             suite: [this.suites[0], Validators.required]
           })
+          Swal.close()
         })
     })
   }
 
   onSubmit() {
     if (!this.form?.valid) {
-      alert('Invalid form data!')
+      this.utils.showError('Invalid form data!')
       return
     }
 
     if (this.flight() == null) {
-      alert('Flight Not Loaded!')
+      this.utils.showError('Flight not loaded!')
       return
     }
 
-    try {
-      UserService.createReservation(this.flight()!.id, this.form.value.airline, this.form.value.suite)
-      this.router.navigateByUrl('/profile')
-    } catch {
-      alert('Failed to make a reservation!')
-    }
+    this.utils.showConfirm('Are you sure you want to make a reservation?', () => {
+      try {
+        UserService.createReservation(this.flight()!.id, this.form!.value.airline, this.form!.value.suite)
+        this.router.navigateByUrl('/profile')
+      } catch {
+        this.utils.showError('Failed to make a reservation!')
+      }
+    })
   }
 }
