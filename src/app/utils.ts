@@ -28,6 +28,7 @@ export class Utils {
 
   public showAlert(text: string) {
     Swal.fire({
+      icon: 'info',
       titleText: text,
       customClass: this.bootstrapClasses
     })

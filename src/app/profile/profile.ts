@@ -7,31 +7,47 @@ import { Utils } from '../utils';
 import { FlightModel } from '../../models/flight.model';
 import { FlightService } from '../../services/flight.service';
 import Swal from 'sweetalert2';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
 export class Profile {
+  protected form: FormGroup
   protected currentUser = signal<UserModel | null>(null)
   protected flights = signal<FlightModel[]>([])
+  protected destinations = signal<string[]>([])
 
-  constructor(private router: Router, public utils: Utils) {
+  constructor(private formBuilder: FormBuilder, private router: Router, public utils: Utils) {
     try {
       this.utils.showLoading()
       this.currentUser.set(UserService.getActiveUser())
-      FlightService.getFlightsByIds(this.currentUser()!.data.map(r => r.flightId))
-        .then(rsp => {
-          this.flights.set(rsp.data)
-          Swal.close()
-        })
     } catch {
       // Nema aktivnog korisnika
       // Idi na login
       this.router.navigate(['/login'])
     }
+
+    this.form = this.formBuilder.group({
+      firstName: [this.currentUser()!.firstName, Validators.required],
+      lastName: [this.currentUser()!.lastName, Validators.required],
+      phone: [this.currentUser()!.phone, Validators.required],
+      destination: [this.currentUser()!.destination, Validators.required]
+    })
+
+    FlightService.getFlightsByIds(this.currentUser()!.data.map(r => r.flightId))
+      .then(rsp => {
+        this.flights.set(rsp.data)
+        Swal.close()
+      })
+
+    FlightService.getDestinations()
+      .then(rsp => {
+        this.destinations.set(rsp.data)
+      })
   }
 
   protected pay(r: ReservationModel) {
@@ -64,5 +80,15 @@ export class Profile {
 
   protected getFlight(r: ReservationModel) {
     return this.flights().find(f => f.id === r.flightId)
+  }
+
+  protected onSubmit() {
+    if (!this.form.valid) {
+      this.utils.showError('Invalid form data')
+      return
+    }
+
+    UserService.updateUser(this.form.value)
+    this.utils.showAlert('Profile has been updated!')
   }
 }

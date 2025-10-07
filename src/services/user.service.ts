@@ -84,6 +84,20 @@ export class UserService {
         localStorage.setItem('users', JSON.stringify(users))
     }
 
+    static updateUser(newUser: UserModel) {
+        const active = this.getActiveUser()
+        const users = this.getUsers()
+        users.forEach(u => {
+            if (u.email == active.email) {
+                u.firstName = newUser.firstName
+                u.lastName = newUser.lastName
+                u.phone = newUser.phone
+                u.destination = newUser.destination
+            }
+        })
+        localStorage.setItem('users', JSON.stringify(users))
+    }
+
     static logout() {
         localStorage.removeItem('active')
     }

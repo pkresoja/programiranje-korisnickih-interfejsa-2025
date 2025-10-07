@@ -35,15 +35,20 @@
             <i class="fa-solid fa-circle-left"></i> Logout
           </button>
         </li>
-        } 
+        }
         @else {
-          <li class="nav-item">
+        <li class="nav-item">
           <a class="nav-link" routerLink="/login">
             <i class="fa-solid fa-right-to-bracket"></i> Login
           </a>
         </li>
         }
       </ul>
+      @if(hasAuth()) {
+      <div class="navbar-text">
+       <i class="fa-solid fa-user"></i> {{currentUser()!.email}}
+      </div>
+      }
     </div>
   </div>
 </nav>

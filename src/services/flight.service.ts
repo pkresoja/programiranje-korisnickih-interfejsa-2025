@@ -26,4 +26,8 @@ export class FlightService {
             data: ids
         })
     }
+
+    static async getDestinations() {
+        return await client.get<string[]>('/flight/destination')
+    }
 }
