@@ -98,6 +98,17 @@ export class UserService {
         localStorage.setItem('users', JSON.stringify(users))
     }
 
+    static updateUserPassword(newPassword: string) {
+        const active = this.getActiveUser()
+        const users = this.getUsers()
+        users.forEach(u => {
+            if (u.email == active.email) {
+                u.password = newPassword
+            }
+        })
+        localStorage.setItem('users', JSON.stringify(users))
+    }
+
     static logout() {
         localStorage.removeItem('active')
     }

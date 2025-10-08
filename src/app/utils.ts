@@ -55,12 +55,6 @@ export class Utils {
     }).then(result => {
       if (result.isConfirmed) {
         callback()
-        Swal.fire({
-          title: "Success",
-          confirmButtonText: 'Close',
-          icon: "success",
-          customClass: this.bootstrapClasses
-        })
       }
     })
   }

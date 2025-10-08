@@ -16,7 +16,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrl: './profile.css'
 })
 export class Profile {
-  protected form: FormGroup
+  protected profileForm: FormGroup
+  protected passwordForm: FormGroup
   protected currentUser = signal<UserModel | null>(null)
   protected flights = signal<FlightModel[]>([])
   protected destinations = signal<string[]>([])
@@ -31,11 +32,17 @@ export class Profile {
       this.router.navigate(['/login'])
     }
 
-    this.form = this.formBuilder.group({
+    this.profileForm = this.formBuilder.group({
       firstName: [this.currentUser()!.firstName, Validators.required],
       lastName: [this.currentUser()!.lastName, Validators.required],
       phone: [this.currentUser()!.phone, Validators.required],
       destination: [this.currentUser()!.destination, Validators.required]
+    })
+
+    this.passwordForm = this.formBuilder.group({
+      current: ['', Validators.required],
+      new: ['', Validators.required],
+      repeat: ['', Validators.required]
     })
 
     FlightService.getFlightsByIds(this.currentUser()!.data.map(r => r.flightId))
@@ -82,13 +89,40 @@ export class Profile {
     return this.flights().find(f => f.id === r.flightId)
   }
 
-  protected onSubmit() {
-    if (!this.form.valid) {
-      this.utils.showError('Invalid form data')
-      return
-    }
+  protected onProfileSubmit() {
+    this.utils.showConfirm('Are you sure you want to update your profile?', () => {
+      if (!this.profileForm.valid) {
+        this.utils.showError('Invalid form data')
+        return
+      }
 
-    UserService.updateUser(this.form.value)
-    this.utils.showAlert('Profile has been updated!')
+      UserService.updateUser(this.profileForm.value)
+      this.utils.showAlert('Profile has been updated!')
+    })
+  }
+
+  protected onPasswordSubmit() {
+    this.utils.showConfirm('Are you sure you want to change your password?', () => {
+      if (!this.passwordForm.valid) {
+        this.utils.showError('Invalid password form data')
+        return
+      }
+
+      const old = this.currentUser()!.password
+      if (old != this.passwordForm.value.current) {
+        this.utils.showError('Incorrect current password')
+        return
+      }
+
+      if (this.passwordForm.value.new != this.passwordForm.value.repeat) {
+        this.utils.showError("New passwords don't match!")
+        return
+      }
+
+      UserService.updateUserPassword(this.passwordForm.value.new)
+      this.utils.showAlert("Password has been changed! You will be redirected to the login page.")
+      UserService.logout()
+      this.router.navigateByUrl('/login')
+    })
   }
 }
