@@ -14,4 +14,8 @@ export interface FlightModel {
   plane: string
   gate: string | null
   terminal: number
+  rating?: {
+    likes: number
+    dislikes: number
+  }
 }

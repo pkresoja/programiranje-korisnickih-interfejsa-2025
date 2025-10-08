@@ -20,7 +20,7 @@ export class FlightService {
     }
 
     static async getFlightsByIds(ids: number[]) {
-        return await client.request({
+        return await client.request<FlightModel[]>({
             url: '/flight/list',
             method: 'post',
             data: ids

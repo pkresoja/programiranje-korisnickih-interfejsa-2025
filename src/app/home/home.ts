@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { FlightModel } from '../../models/flight.model';
 import { Utils } from '../utils';
 import Swal from 'sweetalert2';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -16,10 +17,24 @@ export class Home {
 
   constructor(protected utils: Utils) {
     this.utils.showLoading()
-    FlightService.getFutureFlights()
-      .then(rsp => {
-        this.flights.set(rsp.data)
-        Swal.close()
+    UserService.loadRatingForDestination()
+      .then(ratings => {
+        FlightService.getFutureFlights()
+          .then(rsp => {
+            rsp.data.forEach(f => {
+              if (ratings[f.destination.replaceAll(' ', '')]) {
+                f.rating = ratings[f.destination.replaceAll(' ', '')]
+              } else {
+                f.rating = {
+                  likes: 0,
+                  dislikes: 0
+                }
+              }
+            })
+            console.log(rsp.data)
+            this.flights.set(rsp.data)
+            Swal.close()
+          })
       })
-  }  
+  }
 }
