@@ -1,0 +1,10 @@
+.other {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.other-card {
+    width: 14rem;
+}

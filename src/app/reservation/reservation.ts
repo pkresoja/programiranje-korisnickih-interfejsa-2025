@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FlightModel } from '../../models/flight.model';
 import { FlightService } from '../../services/flight.service';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reservation',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './reservation.html',
   styleUrl: './reservation.css'
 })
@@ -27,7 +27,7 @@ export class Reservation {
   ) {
     this.route.params.subscribe((params: any) => {
       // Provera da li smo ulogovani
-      if (!localStorage.getItem('active')) {
+      if (!localStorage.getItem(UserService.ACTIVE_KEY)) {
         sessionStorage.setItem('ref', `/details/${params.id}/book`)
         router.navigateByUrl('/login')
         return

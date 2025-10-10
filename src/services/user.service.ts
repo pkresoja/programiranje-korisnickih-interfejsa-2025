@@ -4,9 +4,12 @@ import { UserModel } from "../models/user.model"
 import { FlightService } from "./flight.service"
 
 export class UserService {
+    public static USERS_KEY = 'pki_users'
+    public static ACTIVE_KEY = 'pki_active'
+
     static getUsers(): UserModel[] {
-        if (!localStorage.getItem('users'))
-            localStorage.setItem('users', JSON.stringify([
+        if (!localStorage.getItem(UserService.USERS_KEY))
+            localStorage.setItem(UserService.USERS_KEY, JSON.stringify([
                 {
                     firstName: 'Example',
                     lastName: 'User',
@@ -17,7 +20,7 @@ export class UserService {
                     data: []
                 }
             ]))
-        return JSON.parse(localStorage.getItem('users')!)
+        return JSON.parse(localStorage.getItem(UserService.USERS_KEY)!)
     }
 
     static findUserByEmail(email: string) {
@@ -36,17 +39,17 @@ export class UserService {
             throw new Error('BAD_CREDENTIALS')
         }
 
-        localStorage.setItem('active', user.email)
+        localStorage.setItem(UserService.ACTIVE_KEY, user.email)
     }
 
     static signup(payload: UserModel) {
         const users: UserModel[] = this.getUsers()
         users.push(payload)
-        localStorage.setItem('users', JSON.stringify(users))
+        localStorage.setItem(UserService.USERS_KEY, JSON.stringify(users))
     }
 
     static getActiveUser() {
-        const active = localStorage.getItem('active')
+        const active = localStorage.getItem(UserService.ACTIVE_KEY)
         if (!active)
             throw new Error('NO_ACTIVE_USER')
 
@@ -68,7 +71,7 @@ export class UserService {
                 })
             }
         })
-        localStorage.setItem('users', JSON.stringify(users))
+        localStorage.setItem(UserService.USERS_KEY, JSON.stringify(users))
     }
 
     static updateReservationStatus(createdAt: string, newStatus: 'paid' | 'waiting' | 'canceled' | 'liked' | 'disliked') {
@@ -84,7 +87,7 @@ export class UserService {
                 })
             }
         })
-        localStorage.setItem('users', JSON.stringify(users))
+        localStorage.setItem(UserService.USERS_KEY, JSON.stringify(users))
     }
 
     static updateUser(newUser: UserModel) {
@@ -98,7 +101,7 @@ export class UserService {
                 u.destination = newUser.destination
             }
         })
-        localStorage.setItem('users', JSON.stringify(users))
+        localStorage.setItem(UserService.USERS_KEY, JSON.stringify(users))
     }
 
     static updateUserPassword(newPassword: string) {
@@ -109,7 +112,7 @@ export class UserService {
                 u.password = newPassword
             }
         })
-        localStorage.setItem('users', JSON.stringify(users))
+        localStorage.setItem(UserService.USERS_KEY, JSON.stringify(users))
     }
 
     static async loadRatingForDestination() {
@@ -155,6 +158,6 @@ export class UserService {
     }
 
     static logout() {
-        localStorage.removeItem('active')
+        localStorage.removeItem(UserService.ACTIVE_KEY)
     }
 }

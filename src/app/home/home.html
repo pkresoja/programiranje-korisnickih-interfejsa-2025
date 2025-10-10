@@ -1,3 +1,38 @@
+@if (allFlights().length > 0) {
+<div class="row">
+    <div class="col-12 col-md-3 mb-3">
+        <select class="form-select" [(ngModel)]="selectedDestination" (change)="search()">
+            <option value="all">All Destinations</option>
+            @for (dest of getDestinations(); track $index) {
+            <option [value]="dest">{{dest}}</option>
+            }
+        </select>
+    </div>
+    <div class="col-12 col-md-3 mb-3">
+        <select class="form-select" [(ngModel)]="selectedFlightNumber" (change)="search()">
+            <option value="all">All Flight Numbers</option>
+            @for (num of getFlightNumbers(); track $index) {
+            <option [value]="num">{{num}}</option>
+            }
+        </select>
+    </div>
+    <div class="col-12 col-md-3 mb-3">
+        <select class="form-select" [(ngModel)]="selectedDepartureDate" (change)="search()">
+            <option value="all">Select Date</option>
+            @for (date of getDepartureDates(); track $index) {
+            <option [value]="date">{{date}}</option>
+            }
+        </select>
+    </div>
+    <div class="col-12 col-md-3 mb-3">
+        <select class="form-select" [(ngModel)]="selectedRating" (change)="search()">
+            <option value="all">All Ratings</option>
+            <option value="positive">Positive Rating</option>
+            <option value="negative">Negaive Rating</option>
+        </select>
+    </div>
+</div>
+@if (flights().length > 0) {
 <div class="flights">
     @for (flight of flights(); track $index) {
     <div class="card" [attr.data-flight-id]="flight.id">
@@ -8,8 +43,8 @@
                 {{flight.flightNumber}} ({{utils.formatDate(flight.scheduledAt)}})
             </h6>
             <p>
-                <i class="fa-solid fa-thumbs-up"></i> {{flight.rating?.likes}} <i
-                    class="fa-solid fa-thumbs-down"></i> {{flight.rating?.dislikes}}
+                <i class="fa-solid fa-thumbs-up"></i> {{flight.rating?.likes}} <i class="fa-solid fa-thumbs-down"></i>
+                {{flight.rating?.dislikes}}
             </p>
         </div>
         <div class="card-footer">
@@ -25,3 +60,9 @@
     </div>
     }
 </div>
+} @else {
+<div class="text-center">
+    <h5>Can't find a flight with selected criteria!</h5>
+</div>
+}
+}

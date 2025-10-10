@@ -1,7 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { UserService } from '../services/user.service';
-import { UserModel } from '../models/user.model';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +9,13 @@ import { UserModel } from '../models/user.model';
   styleUrl: './app.css'
 })
 export class App {
-  protected currentUser = signal<UserModel | null>(null)
+  protected currentUser = signal<string | null>(null)
   constructor(protected router: Router) {
-    this.currentUser.set(UserService.getActiveUser())
+    this.currentUser.set(localStorage.getItem(UserService.ACTIVE_KEY))
   }
 
   hasAuth() {
-    if (localStorage.getItem('active'))
+    if (localStorage.getItem(UserService.ACTIVE_KEY))
       return true
     return false
   }

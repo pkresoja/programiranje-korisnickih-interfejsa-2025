@@ -1,20 +1,25 @@
 @if(flight()) {
-<div class="row">
-    <div class="col-12 col-md-6">
-        <img class="img-fluid" [src]="utils.getImage(flight()!.destination)">
-    </div>
-    <div class="col-12 col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h5>Flight Details</h5>
-            </div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Details</li>
+    </ol>
+</nav>
+<div class="card mb-3">
+    <div class="row g-0">
+        <div class="col-md-6">
+            <img [src]="utils.getImage(flight()!.destination)" class="img-fluid rounded-start">
+        </div>
+        <div class="col-md-6 my-auto">
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item">
                         Destination: <strong>{{flight()?.destination}}</strong>
                     </li>
                     <li class="list-group-item">
-                       Flight Number: <strong>{{flight()?.flightNumber}}</strong>
+                        Flight Number: <strong>{{flight()?.flightNumber}}</strong>
                     </li>
                     <li class="list-group-item">
                         Scheduled At: <strong>{{utils.formatDate(flight()!.scheduledAt)}}</strong>
@@ -28,12 +33,33 @@
                     <li class="list-group-item">
                         Terminal: <strong>{{flight()?.terminal}}</strong>
                     </li>
+                    <li class="list-group-item">
+                        <a [routerLink]="`/details/${flight()!.id}/book`" class="btn btn-sm btn-success">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Book Now
+                        </a>
+                    </li>
                 </ul>
+
             </div>
         </div>
     </div>
 </div>
-<div class="row">
-    <pre>{{convertToString()}}</pre>
+<h5 class="text-center">Other available departures:</h5>
+<div class="other mt-3">
+    @for (f of other(); track $index) {
+    <div class="card other-card">
+        <div class="card-header">
+            {{utils.formatDate(f.scheduledAt)}}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{f.flightNumber}}</h5>
+        </div>
+        <div class="card-footer">
+            <a [routerLink]="`/details/${f.id}/book`" class="btn btn-sm btn-success">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Book Now
+            </a>
+        </div>
+    </div>
+    }
 </div>
 }

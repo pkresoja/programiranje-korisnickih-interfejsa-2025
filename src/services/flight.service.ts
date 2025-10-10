@@ -19,6 +19,10 @@ export class FlightService {
         return await client.get<FlightModel>(`/flight/${id}`)
     }
 
+    static async getFlightsByDestination(destination: string) {
+        return await client.get<any>(`/flight/destination/${destination}`)
+    }
+
     static async getFlightsByIds(ids: number[]) {
         return await client.request<FlightModel[]>({
             url: '/flight/list',
