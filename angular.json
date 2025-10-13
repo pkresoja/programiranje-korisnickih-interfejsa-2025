@@ -13,6 +13,9 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "loader": {
+              ".woff2": "file"
+            },
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
