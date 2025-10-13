@@ -47,12 +47,12 @@
 <h5 class="text-center">Other available departures:</h5>
 <div class="other mt-3">
     @for (f of other(); track $index) {
-    <div class="card other-card">
+    <div class="card other-card text-center">
         <div class="card-header">
-            {{utils.formatDate(f.scheduledAt)}}
+            {{f.flightNumber}}
         </div>
         <div class="card-body">
-            <h5 class="card-title">{{f.flightNumber}}</h5>
+            <h5 class="card-title">{{utils.formatDate(f.scheduledAt)}}</h5>
         </div>
         <div class="card-footer">
             <a [routerLink]="`/details/${f.id}/book`" class="btn btn-sm btn-success">

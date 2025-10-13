@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { UserService } from '../services/user.service';
+import { Utils } from './utils';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ import { UserService } from '../services/user.service';
 })
 export class App {
   protected currentUser = signal<string | null>(null)
-  constructor(protected router: Router) {
+  constructor(protected router: Router, protected utils: Utils) {
     this.currentUser.set(localStorage.getItem(UserService.ACTIVE_KEY))
   }
 
@@ -21,8 +22,9 @@ export class App {
   }
 
   logoutNow() {
-    if (!confirm('Logout now?')) return
-    UserService.logout()
-    this.router.navigateByUrl('/login')
+    this.utils.showConfirm('Logout now?', () => {
+      UserService.logout()
+      this.router.navigateByUrl('/login')
+    })
   }
 }
