@@ -22,6 +22,7 @@ jobs:
           node-version: 'latest'
           cache: 'npm'
 
+      - run: npm install -g @angular/cli
       - run: npm install
       - run: npm run build
 
